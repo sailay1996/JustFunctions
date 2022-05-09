@@ -58,3 +58,54 @@ EXEC:
    "getRuntime.exec",
    "ProcessBuilder.start",
    "GroovyShell.evaluate"
+
+
+
+
+classloaders define classes (=arbitrary java code execution):
+
+java.lang.classloader.defineclass java.net.urlclassloader 
+= code execution
+
+java beans introspection may divert classloaders loading classes untrusted source (example vuln - cve-2010-1622)
+
+java.beans.instrospector.getbeaninfo 
+= code execution
+
+file access
+
+java.io.file (constructor) java.io.file.delete java.io.file.renameto java.io.file.listfiles java.io.file.list 
+= deleting/renaming files, directory listing
+
+file stream/reader classes
+
+java.io.fileinputstream java.io.fileoutputstream java.io.filereader java.io.filewriter java.io.randomaccessfile 
+=file read/write access
+
+java system properties
+
+system.setproperty system.getproperties system.getproperty 
+=some system properties might contain information that's sensitive, , system properties might alter execution of critical stuff, don't have examples, though
+
+loading native libraries
+
+system.load system.loadlibrary 
+= arbitrary code execution
+
+executing operating system executables
+
+runtime.exec processbuilder (constructor) 
+generating native system input events
+
+java.awt.robot.keypress/keyrelease java.awt.robot.mousemove/mousepress/mouserelease 
+(maybe far-fetched since server might not have graphical environment)
+
+java reflection - accessing arbitrary (even private) fields , methods
+
+java.lang.class.getdeclaredmethod java.lang.class.getdeclaredfield java.lang.reflection.method.invoke java.lang.reflection.field.set java.lang.reflection.field.get 
+= disclosing sensitive information eventual code execution, depending on circumstances
+
+java scripting engine
+
+javax.script.scriptengine.eval 
+=arbitrary code execution
